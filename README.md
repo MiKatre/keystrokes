@@ -16,6 +16,13 @@ Dashboard: today's keys and clicks, seven-day chart, imported history and counts
 
 <img src="docs/images/dashboard.jpg" width="460" alt="Keystrokes dashboard showing daily keyboard and mouse counts, weekly history and per-app statistics">
 
+<details>
+<summary>App statistics and controls</summary>
+
+<img src="docs/images/details.jpg" width="460" alt="Per-app statistics, compact Data menu, Quit and launch-at-login controls">
+
+</details>
+
 ## Run
 
 Requires macOS 14+ and Swift 6+. Install Apple's Command Line Tools if needed:
@@ -47,7 +54,6 @@ The launcher builds `dist/Keystrokes.app` and installs a copy in `~/Applications
 - Keystrokes and mouse clicks; held-key repeats ignored, matching OctoMouse.
 - Today, all recorded history, seven-day chart.
 - Foreground app counts; comma-separated bundle-ID exclusions.
-- Pause/resume; preferences survive restarts.
 - Opt-in launch at login; first launch asks, dashboard checkbox changes it later.
 - Automatic read-only OctoMouse migration through the launcher, before collecting new input.
 - Daily CSV export; portable SQLite database in `~/Library/Application Support/Keystrokes/stats.sqlite`.

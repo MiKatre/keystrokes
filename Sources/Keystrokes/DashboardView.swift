@@ -22,7 +22,7 @@ struct DashboardView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Keystrokes").font(.title2.bold())
                     HStack(spacing: 5) {
-                        Circle().fill(model.monitoring && !model.paused ? Color.green : Color.orange).frame(width: 6, height: 6)
+                        Circle().fill(model.monitoring ? Color.green : Color.orange).frame(width: 6, height: 6)
                         Text(model.status).font(.caption).foregroundStyle(.secondary)
                     }
                 }
@@ -120,27 +120,8 @@ struct DashboardView: View {
                 }
             }
 
-            HStack {
-                Button(model.paused ? "Resume" : "Pause") { model.paused.toggle() }
-                Menu("Data") {
-                    Button("Import OctoMouse…", action: model.importOctoMouse)
-                    Button("Export daily totals…", action: model.exportCSV)
-                    Button("Show database in Finder", action: model.revealData)
-                }
-                Spacer()
-                Button("Quit") { NSApplication.shared.terminate(nil) }
-            }.controlSize(.small)
-            Toggle("Launch at login", isOn: Binding(
-                get: { model.launchAtLoginEnabled },
-                set: { model.setLaunchAtLogin($0) }
-            )).toggleStyle(.checkbox).font(.caption)
-            if model.launchAtLoginNeedsApproval {
-                Text("Approve Keystrokes in Login Items to enable automatic launch.")
-                    .font(.caption).foregroundStyle(.secondary)
-                Button("Open Login Items", action: model.openLoginSettings).controlSize(.small)
-            }
-            Text("Local only. Counts, not typed text. App tracking starts with v0.")
-                .font(.caption2).foregroundStyle(.tertiary)
+            Divider()
+            footer
         }
         .padding(22)
         }
@@ -151,6 +132,42 @@ struct DashboardView: View {
             Button("Not now", role: .cancel) { model.finishLaunchAtLoginPrompt(enabled: false) }
         } message: {
             Text("Keep counting automatically when you sign in to your Mac. You can change this later with Launch at login.")
+        }
+    }
+
+    private var footer: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 16) {
+                Menu("Data…") {
+                    Button("Import OctoMouse…", action: model.importOctoMouse)
+                    Button("Export daily totals…", action: model.exportCSV)
+                    Button("Show database in Finder", action: model.revealData)
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+
+                Spacer()
+                Button("Quit") { NSApplication.shared.terminate(nil) }
+                    .buttonStyle(.plain)
+                    .padding(.vertical, 4)
+                    .help("Quit Keystrokes")
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .controlSize(.small)
+
+            Toggle("Launch at login", isOn: Binding(
+                get: { model.launchAtLoginEnabled },
+                set: { model.setLaunchAtLogin($0) }
+            )).toggleStyle(.checkbox).font(.caption)
+
+            if model.launchAtLoginNeedsApproval {
+                Text("Approve Keystrokes in Login Items to enable automatic launch.")
+                    .font(.caption).foregroundStyle(.secondary)
+                Button("Open Login Items", action: model.openLoginSettings).controlSize(.small)
+            }
+            Text("Stored locally on your Mac")
+                .font(.caption2).foregroundStyle(.secondary)
         }
     }
 

@@ -19,9 +19,6 @@ final class AppModel: ObservableObject {
     @Published private(set) var loginItemStatus = SMAppService.mainApp.status
     var launchAtLoginEnabled: Bool { loginItemStatus == .enabled }
     var launchAtLoginNeedsApproval: Bool { loginItemStatus == .requiresApproval }
-    @Published var paused: Bool {
-        didSet { UserDefaults.standard.set(paused, forKey: "paused") }
-    }
     @Published var excludedApps: String {
         didSet { UserDefaults.standard.set(excludedApps, forKey: "excludedApps") }
     }
@@ -50,13 +47,11 @@ final class AppModel: ObservableObject {
     var allClicks: Int64 { days.reduce(0) { $0 + $1.clicks } }
     var status: String {
         if store == nil { return "Storage unavailable" }
-        if paused { return "Paused" }
         if !monitoring { return "Input Monitoring permission needed" }
         return "Counting on this Mac"
     }
 
     private init() {
-        paused = UserDefaults.standard.bool(forKey: "paused")
         excludedApps = UserDefaults.standard.string(forKey: "excludedApps") ?? ""
         databaseURL = StatsStore.defaultURL
         do {
@@ -82,7 +77,7 @@ final class AppModel: ObservableObject {
     }
 
     private func receive(key: Bool) {
-        guard !paused, store != nil else { return }
+        guard store != nil else { return }
         guard let app = NSWorkspace.shared.frontmostApplication else { return }
         let bundle = app.bundleIdentifier ?? "pid:\(app.processIdentifier)"
         guard bundle != Bundle.main.bundleIdentifier else { return }

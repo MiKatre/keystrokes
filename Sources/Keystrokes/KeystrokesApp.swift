@@ -33,13 +33,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         popover.behavior = .transient
         popover.contentSize = NSSize(width: 460, height: 650)
         popover.contentViewController = NSHostingController(rootView: DashboardView(model: model))
-        subscription = model.$days.combineLatest(model.$paused).sink { [weak self] days, paused in
+        subscription = model.$days.sink { [weak self] days in
             let day = DayKey.string()
             let keys = days.first { $0.day == day }?.keys ?? 0
             self?.statusItem?.button?.title = " " + keys.formatted(.number.notation(.compactName))
-            self?.statusItem?.button?.image = paused
-                ? NSImage(systemSymbolName: "pause.circle", accessibilityDescription: "Keystrokes paused")
-                : self?.activityIcon
         }
         let launchedAtLogin = NSAppleEventManager.shared().currentAppleEvent?
             .paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
