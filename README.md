@@ -13,7 +13,7 @@ cd ~/Projects/Experiments/keystrokes
 ./run.sh
 ```
 
-First build takes longer. Later builds reuse the compiler cache. A dashboard window opens on launch. Click the keyboard icon and number in the menu bar to open its popover. The dashboard window temporarily shows a Dock icon; closing it hides that icon and keeps the menu bar counter running. Use **Quit** to stop the app. Double-clicking the app again opens the dashboard window.
+First build takes longer. Later builds reuse the compiler cache. A dashboard window opens on launch. Click the activity icon and number in the menu bar to open its popover. The dashboard window temporarily shows a Dock icon; closing it hides that icon and keeps the menu bar counter running. Use **Quit** to stop the app. Double-clicking the app again opens the dashboard window.
 
 Enable **Keystrokes** in **System Settings → Privacy & Security → Input Monitoring**, using the dashboard button. If macOS asks to quit and reopen, quit Keystrokes and open the installed `Keystrokes.app` (or run `./run.sh` again).
 
@@ -45,6 +45,12 @@ CSV export contains daily key/click totals. To move the complete database, quit 
 
 App exclusions apply to future events; imported history stays intact. V0 excludes its own UI. Browser URL tracking, dictation, active-time tracking, mouse-distance display and packaged distribution are deferred.
 
+## Retiring OctoMouse
+
+Keystrokes collects input independently; OctoMouse is not a runtime dependency. Confirm **Counting on this Mac**, **Launch at login**, and new saved counts with OctoMouse closed before uninstalling it.
+
+This Mac's final handover archives the untouched OctoMouse preferences and a consistent SQLite backup in `~/Library/Application Support/Keystrokes/Migration Backup/`, outside OctoMouse's container. Today's build/permission downtime is recovered as a separate `octomouse-handover` row; original imports and app counts stay intact. Audit metadata: `octomouseHandoverFinalized`. Keep these archives when removing OctoMouse or its container.
+
 ## Launch at login
 
 First launch asks **Start Keystrokes at login?** Choose **Enable** or **Not now**. The dashboard's **Launch at login** checkbox changes this later. Uses macOS Service Management; automatic launch stays off until you opt in. If macOS requires approval, open **System Settings → General → Login Items** and approve Keystrokes. Login launches stay in the menu bar; opening the app manually shows its dashboard.
@@ -62,6 +68,6 @@ The test script loads the installed Swift Testing macro plugin explicitly when a
 
 ## Logo proposals
 
-Eight generated options in `design/logo-options/`: keycap, tally, K monogram, activity pulse, keyboard and mouse, glass key, keyboard, activity key. Options 6–8 explore a more native macOS style. `PROMPTS.md` records the built-in generation prompts. Selection pending.
+Selected: **option 4**, `design/logo-options/option-4.png`. Builds package its full-color app icon and a monochrome menu-bar template at standard and Retina resolutions.
 
-Option 4 shortlisted. Four variants: `option-4a.png` (minimal), `option-4b.png` (glass), `option-4c.png` (continuous arrow), `option-4d.png` (app tile). Prompts in `VARIANTS-4.md`.
+Eight original proposals and four option-4 variants retained in `design/logo-options/`. Generation prompts in `PROMPTS.md` and `VARIANTS-4.md`.

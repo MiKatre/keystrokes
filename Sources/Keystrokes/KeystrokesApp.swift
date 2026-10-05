@@ -11,13 +11,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
     private var subscription: AnyCancellable?
+    private lazy var activityIcon: NSImage? = {
+        let image = NSImage(named: "StatusIcon") ?? NSImage(systemSymbolName: "keyboard", accessibilityDescription: "Keystrokes")
+        image?.size = NSSize(width: 18, height: 18)
+        image?.isTemplate = true
+        image?.accessibilityDescription = "Keystrokes"
+        return image
+    }()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         let model = AppModel.shared
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem = item
         if let button = item.button {
-            button.image = NSImage(systemSymbolName: "keyboard", accessibilityDescription: "Keystrokes")
+            button.image = activityIcon
             button.imagePosition = .imageLeading
             button.target = self
             button.action = #selector(togglePopover)
@@ -30,7 +37,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             let day = DayKey.string()
             let keys = days.first { $0.day == day }?.keys ?? 0
             self?.statusItem?.button?.title = " " + keys.formatted(.number.notation(.compactName))
-            self?.statusItem?.button?.image = NSImage(systemSymbolName: paused ? "pause.circle" : "keyboard", accessibilityDescription: "Keystrokes")
+            self?.statusItem?.button?.image = paused
+                ? NSImage(systemSymbolName: "pause.circle", accessibilityDescription: "Keystrokes paused")
+                : self?.activityIcon
         }
         let launchedAtLogin = NSAppleEventManager.shared().currentAppleEvent?
             .paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
