@@ -15,6 +15,7 @@ final class AppModel: ObservableObject {
     @Published var notice: String?
     @Published var showExclusions = false
     @Published var metric = "Keys"
+    @Published var historyRange = HistoryRange.sevenDays
     @Published var showLaunchAtLoginPrompt = false
     @Published private(set) var loginItemStatus = SMAppService.mainApp.status
     var launchAtLoginEnabled: Bool { loginItemStatus == .enabled }
@@ -43,8 +44,6 @@ final class AppModel: ObservableObject {
         let day = DayKey.string()
         return days.first { $0.day == day }
     }
-    var allKeys: Int64 { days.reduce(0) { $0 + $1.keys } }
-    var allClicks: Int64 { days.reduce(0) { $0 + $1.clicks } }
     var status: String {
         if store == nil { return "Storage unavailable" }
         if !monitoring { return "Input Monitoring permission needed" }

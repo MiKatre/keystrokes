@@ -12,9 +12,16 @@ Menu bar counter:
 
 ![Keystrokes activity icon and live count in the macOS menu bar](docs/images/menu-bar.png)
 
-Dashboard: today's keys and clicks, seven-day chart, imported history and counts per app.
+Dashboard: today's keys and clicks, selectable history ranges, period totals and counts per app.
 
 <img src="docs/images/dashboard.jpg" width="460" alt="Keystrokes dashboard showing daily keyboard and mouse counts, weekly history and per-app statistics">
+
+<details>
+<summary>Explore all recorded history</summary>
+
+<img src="docs/images/history.jpg" width="460" alt="All-history chart with monthly bars and totals from imported OctoMouse history and new Keystrokes activity">
+
+</details>
 
 <details>
 <summary>App statistics and controls</summary>
@@ -52,7 +59,7 @@ The launcher builds `dist/Keystrokes.app` and installs a copy in `~/Applications
 ## v0
 
 - Keystrokes and mouse clicks; held-key repeats ignored, matching OctoMouse.
-- Today, all recorded history, seven-day chart.
+- Today plus 7-day, 30-day, last-12-month and all-history charts with period totals. Daily bars for 7/30 days, weekly for the last 12 months, monthly for all history. Defaults to seven days.
 - Foreground app counts; comma-separated bundle-ID exclusions.
 - Opt-in launch at login; first launch asks, dashboard checkbox changes it later.
 - Automatic read-only OctoMouse migration through the launcher, before collecting new input.
@@ -68,7 +75,7 @@ All daily fields preserved in each imported row's `legacy_json`: counts, elapsed
 
 Imported dates are frozen. Re-import fills missing dates only and skips dates already collected by Keystrokes. This prevents double-counting when OctoMouse keeps running. Today's baseline is captured before v0 starts collecting. **Data → Import OctoMouse…** selects another preferences file. CSV imports are not implemented in v0.
 
-CSV export contains daily key/click totals. To move the complete database, quit Keystrokes and copy `stats.sqlite` plus any remaining `stats.sqlite-wal` / `stats.sqlite-shm` files into the same Application Support directory on the other Mac. Use **Data → Show database in Finder** to locate it.
+CSV export contains daily key/click totals for all recorded days, regardless of the selected chart range. To move the complete database, quit Keystrokes and copy `stats.sqlite` plus any remaining `stats.sqlite-wal` / `stats.sqlite-shm` files into the same Application Support directory on the other Mac. Use **Data → Show database in Finder** to locate it.
 
 App exclusions apply to future events; imported history stays intact. V0 excludes its own UI. Browser URL tracking, dictation, active-time tracking, mouse-distance display and packaged distribution are deferred.
 

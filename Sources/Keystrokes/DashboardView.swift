@@ -5,17 +5,8 @@ import KeystrokesCore
 struct DashboardView: View {
     @ObservedObject var model: AppModel
 
-    private var week: [(date: Date, keys: Int64, clicks: Int64)] {
-        let calendar = Calendar.current
-        return (-6...0).compactMap { offset in
-            guard let date = calendar.date(byAdding: .day, value: offset, to: calendar.startOfDay(for: .now)) else { return nil }
-            let day = DayKey.string(date)
-            let stats = model.days.first { $0.day == day }
-            return (date, stats?.keys ?? 0, stats?.clicks ?? 0)
-        }
-    }
-
     var body: some View {
+        let history = HistorySummary.make(days: model.days, range: model.historyRange)
         ScrollView {
         VStack(alignment: .leading, spacing: 18) {
             HStack {
@@ -48,29 +39,49 @@ struct DashboardView: View {
 
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
-                    Text("Last 7 days").font(.headline)
+                    Picker("Time frame", selection: $model.historyRange) {
+                        ForEach(HistoryRange.allCases) { range in Text(range.title).tag(range) }
+                    }
+                    .pickerStyle(.menu).labelsHidden().fixedSize()
+                    .font(.headline)
                     Spacer()
                     Picker("Metric", selection: $model.metric) { Text("Keys").tag("Keys"); Text("Clicks").tag("Clicks") }
                         .pickerStyle(.segmented).labelsHidden().frame(width: 135)
                 }
-                Chart(week, id: \.date) { day in
-                    BarMark(x: .value("Day", day.date, unit: .day), y: .value(model.metric, model.metric == "Keys" ? day.keys : day.clicks))
+                Chart(history.buckets) { bucket in
+                    BarMark(x: .value("Period", bucket.date, unit: model.historyRange.component),
+                            y: .value(model.metric, model.metric == "Keys" ? bucket.keys : bucket.clicks))
                         .foregroundStyle(model.metric == "Keys" ? Color.indigo.gradient : Color.teal.gradient)
                         .cornerRadius(4)
                 }
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: .day)) { _ in AxisValueLabel(format: .dateTime.weekday(.abbreviated)) }
+                    switch model.historyRange {
+                    case .sevenDays:
+                        AxisMarks(values: .stride(by: .day)) { _ in AxisValueLabel(format: .dateTime.weekday(.abbreviated)) }
+                    case .thirtyDays:
+                        AxisMarks(values: .stride(by: .day, count: 7)) { _ in
+                            AxisValueLabel(format: .dateTime.day().month(.abbreviated), centered: false, anchor: .topTrailing)
+                        }
+                    case .year:
+                        AxisMarks(values: .stride(by: .month, count: 2)) { _ in
+                            AxisValueLabel(format: .dateTime.month(.abbreviated), centered: false, anchor: .topTrailing)
+                        }
+                    case .all:
+                        AxisMarks(values: .automatic(desiredCount: 5)) { _ in
+                            AxisValueLabel(format: .dateTime.month(.abbreviated).year(.twoDigits), centered: false, anchor: .topTrailing)
+                        }
+                    }
                 }
                 .chartYAxis { AxisMarks(position: .leading) }
                 .frame(height: 130)
             }
 
             HStack {
-                Label("\(model.allKeys.formatted()) keys", systemImage: "keyboard")
+                Label("\(history.keys.formatted()) keys", systemImage: "keyboard")
                 Spacer()
-                Text("\(model.allClicks.formatted()) clicks")
+                Text("\(history.clicks.formatted()) clicks")
             }.font(.caption).foregroundStyle(.secondary)
-            Text("All recorded history · \(model.days.count.formatted()) days")
+            Text("\(history.recordedDays.formatted()) recorded days · \(model.historyRange.granularity)")
                 .font(.caption2).foregroundStyle(.tertiary).padding(.top, -12)
 
             Divider()
