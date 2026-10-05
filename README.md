@@ -87,12 +87,6 @@ First launch asks **Start Keystrokes at login?** Choose **Enable** or **Not now*
 
 The test script loads the installed Swift Testing macro plugin explicitly when available, working around a Swift 6.4 beta Command Line Tools build-plan failure. Tests use temporary synthetic data. An optional local migration check accepts `KEYSTROKES_OCTOMOUSE_PLIST=/path/to/preferences.plist`; real history is never committed as a fixture.
 
-## Logo proposals
-
-Selected: **option 4**, `design/logo-options/option-4.png`. Builds package its full-color app icon and a monochrome menu-bar template at standard and Retina resolutions.
-
-Eight original proposals and four option-4 variants retained in `design/logo-options/`. Generation prompts in `PROMPTS.md` and `VARIANTS-4.md`.
-
 ## License
 
 [MIT](LICENSE). Free to build, modify and redistribute, including commercially. Keep the copyright and license notice with redistributed copies.
