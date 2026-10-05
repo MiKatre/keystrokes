@@ -63,3 +63,5 @@ The test script loads the installed Swift Testing macro plugin explicitly when a
 ## Logo proposals
 
 Eight generated options in `design/logo-options/`: keycap, tally, K monogram, activity pulse, keyboard and mouse, glass key, keyboard, activity key. Options 6–8 explore a more native macOS style. `PROMPTS.md` records the built-in generation prompts. Selection pending.
+
+Option 4 shortlisted. Four variants: `option-4a.png` (minimal), `option-4b.png` (glass), `option-4c.png` (continuous arrow), `option-4d.png` (app tile). Prompts in `VARIANTS-4.md`.
