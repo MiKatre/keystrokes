@@ -82,3 +82,7 @@ The test script loads the installed Swift Testing macro plugin explicitly when a
 Selected: **option 4**, `design/logo-options/option-4.png`. Builds package its full-color app icon and a monochrome menu-bar template at standard and Retina resolutions.
 
 Eight original proposals and four option-4 variants retained in `design/logo-options/`. Generation prompts in `PROMPTS.md` and `VARIANTS-4.md`.
+
+## License
+
+[MIT](LICENSE). Free to build, modify and redistribute, including commercially. Keep the copyright and license notice with redistributed copies.
