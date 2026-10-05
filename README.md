@@ -2,16 +2,27 @@
 
 Native macOS menu bar counter. Swift + SwiftUI + SQLite. macOS 14+.
 
+<img src="design/logo-options/option-4.png" width="96" alt="Keystrokes activity icon">
+
+An independent alternative to [OctoMouse](https://github.com/KonsomeJona/OctoMouse), with migration of its daily history. Early v0, built from source; no signed/notarized installer yet. Builds for the current Mac's architecture, including native Apple Silicon. Runtime verified on an Apple Silicon Mac; Intel and macOS 14 are not yet independently tested.
+
 ## Run
 
-No full Xcode installation needed. This Mac already has Apple's Swift compiler.
-
-Double-click **Keystrokes.command**, or run in Terminal:
+Requires macOS 14+ and Swift 6+. Install Apple's Command Line Tools if needed:
 
 ```sh
-cd ~/Projects/Experiments/keystrokes
+xcode-select --install
+```
+
+Clone and run in Terminal; no full Xcode installation needed:
+
+```sh
+git clone https://github.com/MiKatre/keystrokes.git
+cd keystrokes
 ./run.sh
 ```
+
+After cloning, **Keystrokes.command** is also a double-click launcher.
 
 First build takes longer. Later builds reuse the compiler cache. A dashboard window opens on launch. Click the activity icon and number in the menu bar to open its popover. The dashboard window temporarily shows a Dock icon; closing it hides that icon and keeps the menu bar counter running. Use **Quit** to stop the app. Double-clicking the app again opens the dashboard window.
 
@@ -19,7 +30,7 @@ Enable **Keystrokes** in **System Settings → Privacy & Security → Input Moni
 
 If the switch is on but the app still says permission is needed after a rebuild: remove **only Keystrokes** from that list, add the installed `Keystrokes.app` again, and enable it. macOS can retain a permission tied to an older local build's signing fingerprint. The dashboard says **Counting on this Mac** when monitoring is ready.
 
-The launcher builds `dist/Keystrokes.app` and installs a copy in `~/Applications` (or updates this project's existing `/Applications/Keystrokes.app`). **On this Mac: `/Applications/Keystrokes.app`.** Open it with Spotlight or Finder for subsequent launches; recompilation is only needed after source changes. `./run.sh` also reopens the app if it is already running. Quit before rebuilding after source changes. Builds target this Mac's architecture. These are locally signed development builds. After rebuilding, macOS may require re-enabling Input Monitoring. A process lock prevents two app copies from counting simultaneously.
+The launcher builds `dist/Keystrokes.app` and installs a copy in `~/Applications` (or updates an existing `/Applications/Keystrokes.app` with the same bundle identifier). Open the installed app with Spotlight or Finder for subsequent launches; recompilation is only needed after source changes. `./run.sh` also reopens the app if it is already running. Quit before rebuilding after source changes. Builds target the current Mac's architecture. These are locally signed development builds. After rebuilding, macOS may require re-enabling Input Monitoring. A process lock prevents two app copies from counting simultaneously.
 
 ## v0
 
@@ -47,9 +58,9 @@ App exclusions apply to future events; imported history stays intact. V0 exclude
 
 ## Retiring OctoMouse
 
-Keystrokes collects input independently; OctoMouse is not a runtime dependency. Confirm **Counting on this Mac**, **Launch at login**, and new saved counts with OctoMouse closed before uninstalling it.
+Keystrokes collects input independently; OctoMouse is not a runtime dependency. Before the first import, quit OctoMouse normally so it saves its latest totals. Keep a copy of its preferences file outside its container before uninstalling it. Confirm imported history, **Counting on this Mac**, your desired **Launch at login** setting, and new saved counts with OctoMouse closed before removing it.
 
-This Mac's final handover archives the untouched OctoMouse preferences and a consistent SQLite backup in `~/Library/Application Support/Keystrokes/Migration Backup/`, outside OctoMouse's container. Today's build/permission downtime is recovered as a separate `octomouse-handover` row; original imports and app counts stay intact. Audit metadata: `octomouseHandoverFinalized`. Keep these archives when removing OctoMouse or its container.
+Re-import does not reconcile the current day after parallel collection. Input during the initial build or permission setup can be missed; v0 has no automatic final-handover reconciliation or backup feature. To back up Keystrokes, quit it and copy its database and any remaining WAL/SHM files as described above. Keep both backups outside OctoMouse's container.
 
 ## Launch at login
 
@@ -64,7 +75,7 @@ First launch asks **Start Keystrokes at login?** Choose **Enable** or **Not now*
 
 `Package.swift`: build targets. `Sources/Keystrokes`: app/UI/input monitoring. `Sources/KeystrokesCore`: storage and migration. `Tests`: storage/import checks. `scripts/build.sh`: compiles and creates the `.app` bundle.
 
-The test script loads the installed Swift Testing macro plugin explicitly when available, avoiding a build-plan failure in this Mac's Swift 6.4 beta command-line tools.
+The test script loads the installed Swift Testing macro plugin explicitly when available, working around a Swift 6.4 beta Command Line Tools build-plan failure. Tests use temporary synthetic data. An optional local migration check accepts `KEYSTROKES_OCTOMOUSE_PLIST=/path/to/preferences.plist`; real history is never committed as a fixture.
 
 ## Logo proposals
 

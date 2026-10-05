@@ -1,6 +1,6 @@
 # Keystrokes logo options
 
-Generated with the built-in image generation tool. Selection pending. Transparent PNG proposals; not installed as the app icon yet. Options 6–8 explore a more native macOS style.
+Generated with the built-in image generation tool. Original option 4 selected and installed as the app icon. Other transparent PNG proposals retained for reference. Options 6–8 explore a more native macOS style.
 
 ## 1 — Keycap
 

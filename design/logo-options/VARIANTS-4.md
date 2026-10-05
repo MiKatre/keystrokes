@@ -1,6 +1,6 @@
 # Option 4 variants
 
-Generated with the built-in image generation tool. Reference/edit target: `option-4.png`. Original preserved. Selection pending; proposals not installed.
+Generated with the built-in image generation tool. Reference/edit target: `option-4.png`. Original selected and installed; variants retained as proposals.
 
 ## A — Refined minimal
 
