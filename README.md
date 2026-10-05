@@ -14,7 +14,7 @@ Menu bar counter:
 
 Dashboard: today's keys and clicks, seven-day chart, imported history and counts per app.
 
-<img src="docs/images/dashboard.png" width="460" alt="Keystrokes dashboard showing daily keyboard and mouse counts, weekly history and per-app statistics">
+<img src="docs/images/dashboard.jpg" width="460" alt="Keystrokes dashboard showing daily keyboard and mouse counts, weekly history and per-app statistics">
 
 ## Run
 
