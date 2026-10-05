@@ -6,6 +6,16 @@ Native macOS menu bar counter. Swift + SwiftUI + SQLite. macOS 14+.
 
 An independent alternative to [OctoMouse](https://github.com/KonsomeJona/OctoMouse), with migration of its daily history. Early v0, built from source; no signed/notarized installer yet. Builds for the current Mac's architecture, including native Apple Silicon. Runtime verified on an Apple Silicon Mac; Intel and macOS 14 are not yet independently tested.
 
+## Screenshots
+
+Menu bar counter:
+
+![Keystrokes activity icon and live count in the macOS menu bar](docs/images/menu-bar.png)
+
+Dashboard: today's keys and clicks, seven-day chart, imported history and counts per app.
+
+<img src="docs/images/dashboard.png" width="460" alt="Keystrokes dashboard showing daily keyboard and mouse counts, weekly history and per-app statistics">
+
 ## Run
 
 Requires macOS 14+ and Swift 6+. Install Apple's Command Line Tools if needed:
